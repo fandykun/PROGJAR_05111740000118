@@ -15,10 +15,6 @@ print('connecting to ', server_address)
 sock.connect(server_address)
 
 try:
-    # Open file
-    sendfile = open(FILENAME, 'rb')
-    bytes = sendfile.read()
-
     print('sending file: ', FILENAME)
     sock.sendall(FILENAME.encode())
 
@@ -26,15 +22,12 @@ try:
     response = sock.recv(BUFSIZE)
     print('response:', response.decode())
     if response.decode() == FILENAME:
-        sock.sendall(bytes)
-        print(bytes)
-        # Check what server send
-        answer = sock.recv(BUFSIZE)
-        # print('answer: ', answer)
-        if answer == b'GOT FILE':
-            print('file successfully send to server..')
+        recvfile = open('client_' + FILENAME, 'wb')
+        data = sock.recv(BUFSIZE)
+        recvfile.write(data)
+        recvfile.close()
 
-    sendfile.close()
+        print('file successfully received from server..')
 
 finally:
     print('closing socket')
