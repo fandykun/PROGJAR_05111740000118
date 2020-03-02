@@ -1,10 +1,10 @@
 import sys
 import socket
 
-HOST = '127.0.0.1'
-PORT = 31000
+HOST = '192.168.100.25'
+PORT = 31003
 BUFSIZE = 4096 # max buff size
-FILENAME = '' #isi nama file disini
+FILENAME = 'client.py' #isi nama file disini
 
 # Create a TCP/IP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -15,12 +15,12 @@ print('connecting to ', server_address)
 sock.connect(server_address)
 
 try:
-    print('sending file: ', FILENAME)
+    print('download file: ', FILENAME)
     sock.sendall(FILENAME.encode())
 
     # Look for the response
     response = sock.recv(BUFSIZE)
-    print('response:', response.decode())
+    # print('response:', response.decode())
     if response.decode() == FILENAME:
         recvfile = open('client_' + FILENAME, 'wb')
         data = sock.recv(BUFSIZE)
